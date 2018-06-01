@@ -1,21 +1,18 @@
 // List that holds the cards
 var listOfCards = [
-  "fa fa-anchor", "fa fa-anchor",
-  "fa fa-bicycle", "fa fa-bicycle",
-  "fa fa-bolt", "fa fa-bolt",
-  "fa fa-bomb", "fa fa-bomb",
-  "fa fa-cube", "fa fa-cube",
-  "fa fa-diamond", "fa fa-diamond",
-  "fa fa-leaf", "fa fa-leaf",
-  "fa fa-paper-plane-o", "fa fa-paper-plane-o"
+ "fa fa-anchor", "fa fa-anchor",
+ "fa fa-bicycle", "fa fa-bicycle",
+ "fa fa-bolt", "fa fa-bolt",
+ "fa fa-bomb", "fa fa-bomb",
+ "fa fa-cube", "fa fa-cube",
+ "fa fa-diamond", "fa fa-diamond",
+ "fa fa-leaf", "fa fa-leaf",
+ "fa fa-paper-plane-o", "fa fa-paper-plane-o"
 ];
+var cards =[];
+var openCards = [];
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
+shuffle(listOfCards);
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -32,14 +29,65 @@ function shuffle(array) {
     return array;
 }
 
+// Create a card prototype
+var Card = function(name) {
+    this.element = $("<li class='card'><i></i></li>");
+    $(".deck").append(this.element);
+    this.child = $(this.element[0].children[0]);
+    this.child.attr("class", name);
+};
 
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
+// Set up three stages for card: opened, matcged, closed
+Card.prototype.open = function() {
+    $(this.element[0]).attr("class", "card open show");
+};
+
+Card.prototype.match = function() {
+    $(this.element[0]).attr("class", "card match");
+};
+
+Card.prototype.close = function() {
+    $(this.element[0]).attr("class", "card");
+};
+
+// Create instances of the Card prototype and assign card values to them
+function makeCards() {
+    var n = 0
+    for (n = 0; n < listOfCards.length; n++) {
+      cards[n] = new Card(listOfCards[n]);
+    }
+    return cards;
+}
+
+function addToOpenCards(x) {
+    openCards.push(x);
+}
+
+function isMatch() {
+    if (openCards[0].child.attr("class") == openCards[1].child.attr("class")) {
+        openCards[0].match();
+        openCards[1].match();
+    }
+    else {
+        openCards[0].close();
+        openCards[1].close();
+    }
+}
+
+function game() {
+    makeCards();
+    $.each(cards, function(i, card) {
+        $(card.element[0]).click(function() {
+            if (openCards.length < 2) {
+                card.open();
+                addToOpenCards(card);
+            }
+            else {
+                isMatch(card);
+                openCards = [];
+            }
+        });
+    });
+}
+
+game();
