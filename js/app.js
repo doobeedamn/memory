@@ -166,7 +166,7 @@ function isMatch() {
         openCards = [];
         cards.every(checkMatch);
         if (cards.every(checkMatch)) {
-            $(".modal-body p").text("In " + displayTime + " with " + moves + " moves and " + stars + " stars.");
+            $(".modal-body p").text("Your time: " + displayTime + ". Your moves: " + moves + ". Your score: " + stars + " stars out of 3.");
             $(".modal-footer button").click(function() {
                 setupGame();
                 $(".modal").modal("hide");
