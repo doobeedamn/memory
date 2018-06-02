@@ -38,16 +38,16 @@ var Card = function(name) {
     this.child.attr("class", name);
     var card = this;
     $(this.element[0]).click(function() {
-      setupTimer();
-      if (openCards.length < openCardsMax) {
-        if ($(this).attr("class") == "card") {
-          card.open();
-          addToOpenCards(card);
-          moves++;
-          updateMoves();
-          setTimeout(isMatch, 750);
+        setupTimer();
+        if (openCards.length < openCardsMax) {
+            if ($(this).attr("class") == "card") {
+                card.open();
+                addToOpenCards(card);
+                moves++;
+                updateMoves();
+                setTimeout(isMatch, 1500);
+            }
         }
-      }
     });
 };
 
@@ -66,9 +66,8 @@ Card.prototype.close = function() {
 
 // Create instances of the Card prototype and assign card values to them
 function makeCards() {
-    var n = 0
     for (n = 0; n < listOfCards.length; n++) {
-      cards[n] = new Card(listOfCards[n]);
+        cards[n] = new Card(listOfCards[n]);
     }
     return cards;
 }
@@ -78,17 +77,17 @@ function addToOpenCards(x) {
 }
 
 function isMatch() {
-    if (openCards.lenght == 2) {
-      if (openCards[0].child.attr("class") == openCards[1].child.attr("class")) {
-        openCards[0].match();
-        openCards[1].match();
-    }
-    else {
-        openCards[0].close();
-        openCards[1].close();
-    }
-    openCards = [];
-    console.log(cards.every(checkMatch));
+    if (openCards.length == 2) {
+        if (openCards[0].child.attr("class") == openCards[1].child.attr("class")) {
+            openCards[0].match();
+            openCards[1].match();
+        }
+        else {
+            openCards[0].close();
+            openCards[1].close();
+        }
+        openCards = [];
+        console.log(cards.every(checkMatch));
     }
 }
 
@@ -133,7 +132,6 @@ function clearTimer() {
 function checkMatch(card) {
     return $(card.element[0]).attr("class") == "card match";
 }
-
 
 // Reset number of moves
 function reset() {
