@@ -1,4 +1,4 @@
-// List that holds the cards
+// Lists that holds all of the cards
 var listOfCards = [
  "fa fa-anchor", "fa fa-anchor",
  "fa fa-bicycle", "fa fa-bicycle",
@@ -11,6 +11,7 @@ var listOfCards = [
 ];
 var cards =[];
 var openCards = [];
+var openCardsMax = 2;
 
 shuffle(listOfCards);
 
@@ -35,9 +36,22 @@ var Card = function(name) {
     $(".deck").append(this.element);
     this.child = $(this.element[0].children[0]);
     this.child.attr("class", name);
+    var card = this;
+    $(this.element[0]).click(function() {
+      setupTimer();
+      if (openCards.length < openCardsMax) {
+        if ($(this).attr("class") == "card") {
+          card.open();
+          addToOpenCards(card);
+          moves++;
+          updateMoves();
+          setTimeout(isMatch, 750);
+        }
+      }
+    });
 };
 
-// Set up three stages for card: opened, matcged, closed
+// Set up three stages for card: opened, matched, closed
 Card.prototype.open = function() {
     $(this.element[0]).attr("class", "card open show");
 };
@@ -64,13 +78,17 @@ function addToOpenCards(x) {
 }
 
 function isMatch() {
-    if (openCards[0].child.attr("class") == openCards[1].child.attr("class")) {
+    if (openCards.lenght == 2) {
+      if (openCards[0].child.attr("class") == openCards[1].child.attr("class")) {
         openCards[0].match();
         openCards[1].match();
     }
     else {
         openCards[0].close();
         openCards[1].close();
+    }
+    openCards = [];
+    console.log(cards.every(checkMatch));
     }
 }
 
@@ -80,35 +98,54 @@ function updateMoves() {
     $(".moves").empty().append(moves);
 }
 
+// Timer settings
+var startTime = 0;
+var timer = null;
+
+var time = function() {
+    if (cards.every(checkMatch) == false) {
+        updateTime(new Date() - startTime);
+    }
+};
+
+function updateTime(interval) {
+    var seconds = interval / 1000;
+    var sec = Math.floor(seconds) % 60;
+    var min = Math.floor(seconds / 60) % 60;
+    var hr = Math.floor(seconds / 3600);
+    $(".timer").empty().append(hr + ":" + ("0" + min).slice(-2) + ":" + ("0" + sec).slice(-2));
+}
+
+function setupTimer() {
+  if (timer == null) {
+    startTime = new Date();
+    timer = setInterval(time, 1000);
+  }
+}
+
+function clearTimer() {
+    clearInterval(timer);
+    timer = null;
+    updateTime(0);
+
+}
+
+function checkMatch(card) {
+    return $(card.element[0]).attr("class") == "card match";
+}
+
+
 // Reset number of moves
 function reset() {
     $(".restart").click(function() {
+        clearTimer();
         moves = 0;
         updateMoves();
         $(".deck").empty();
         shuffle(listOfCards);
-        game();
+        makeCards();
     });
 }
 
-function game() {
-    makeCards();
-    $.each(cards, function(i, card
-        $(card.element[0]).click(function() {
-            if (openCards.length < 2) {
-                card.open();
-                addToOpenCards(card);
-                moves++;
-                updateMoves();
-                console.log(moves);
-            }
-            else {
-                isMatch(card);
-                openCards = [];
-            }
-        });
-    });
-}
-
-game();
+makeCards();
 reset();
