@@ -13,11 +13,8 @@ body {
     width: 100%;
     height: 100%;
     margin: 0;
-    padding: 0;
-}
-
-body {
-    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
+	padding: 0;
+	background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
     font-family: 'Coda', cursive;
 }
 
@@ -29,7 +26,6 @@ body {
 }
 
 h1 {
-    font-family: 'Open Sans', sans-serif;
     font-weight: 300;
 }
 
@@ -39,7 +35,7 @@ h1 {
 
 .deck {
     width: 660px;
-    min-height: 680px;
+    min-height: 650px;
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
     padding: 32px;
     border-radius: 10px;
@@ -71,14 +67,16 @@ h1 {
     cursor: default;
 }
 
-.deck .card.display {
-    font-size: 33px;
+.deck .card.show {
+    font-size: 30px;
+    transition-timing-function: ease-in;
+    transition-duration: .2s;
 }
 
 .deck .card.match {
     cursor: default;
     background: #02ccba;
-    font-size: 33px;
+    font-size: 30px;
 }
 
 /*
@@ -87,16 +85,14 @@ h1 {
 
 .score-panel {
     text-align: left;
-    width: 345px;
+    max-width: 600px;
+    width: 100%;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
 }
-
-.score-panel .left {
-    float: left;
-}
-
-.score-panel .right {
-    float: right;
+.stars, .time {
+	margin-right: 5px;
 }
 
 .score-panel .stars {
@@ -111,54 +107,68 @@ h1 {
     display: inline-block;
 }
 
-.score-panel .timer {
-    float: left;
-}
-
 .score-panel .restart {
     float: right;
-    margin-left: 5px;
     cursor: pointer;
 }
 
-.modal-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+.fa-star {
+	color: orange;
 }
 
-.modal-title {
-  text-align: center;
-  font-size: 4em;
-  font-weight: bold;
+.display-none {
+	display: none;
 }
 
-.modal-body {
-  text-align: center;
-  font-size: 2em;
-  font-weight:normal;
+.green {
+	color: green;
 }
 
-.modal-footer {
-  align-content: center;
+.gold {
+	color: orange;
 }
 
-.modal-button {
-  background-color: #728C00;
-  color: white;
-  border: none;
-  padding: 16px 32px;
-  text-align: center;
-  font-weight: bold;
-  display: inline-block;
-  font-size: 1em;
-  margin: 4px 2px;
+.red {
+	color: red;
+}
+
+/*
+ * Styles for the Pop Up Modal
+ */
+
+.pop-up-modal {
+	width: 600px;
+	height: 590px;
+	position: absolute;
+	z-index: 2;
+	background-color: #666699;
+	opacity: .85;
+	border-radius: 5px;
+	text-align: center;
+  align-items: center;
+}
+
+.restart {
   cursor: pointer;
 }
 
-.modal-button:hover {
-  background-color: white;
-  color: #728C00;
-  border: 1px solid #728C00;
+.heading-three, .sub-heading, .heading-one {
+	font-weight: 400;
+	color: white;
+}
+
+.heading-three {
+	font-size: 20px;
+}
+
+.sub-heading {
+	font-size: 18px;
+}
+
+.text-white {
+	color: white;
+}
+
+.header {
+	font-size: 35px;
 }
